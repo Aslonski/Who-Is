@@ -33,12 +33,14 @@ post '/slack' do
            when 'reaction_added'
              # Event handler for when a user reacts to a message or item
              Events.reaction_added(team_id, event_data)
+             p "REACTION!"
            when 'pin_added'
              # Event handler for when a user pins a message
              Events.pin_added(team_id, event_data)
            when 'message'
              # Event handler for messages, including Share Message actions
-             Events.message(team_id, event_data)
+             a = Events.message(team_id, event_data)
+             p a
            else
              # In the event we receive an event we didn't expect, we'll log it and move on.
              puts "Unexpected event:\n"
