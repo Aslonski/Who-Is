@@ -15,6 +15,8 @@ end
 post '/slack' do 
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
    request_data = JSON.parse(request.body.read)
+                puts JSON.pretty_generate(request_data)
+
  case request_data['type']
        # When you enter your Events webhook URL into your app's Event Subscription settings, Slack verifies the
        # URL's authenticity by sending a challenge token to your endpoint, expecting your app to echo it back.
