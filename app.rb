@@ -21,24 +21,24 @@ post '/slack' do
        when 'url_verification'
          request_data['challenge']
 
-       when 'event_callback'
-         # Get the Team ID and Event data from the request object
-         team_id = request_data['team_id']
-         event_data = request_data['event']
+       # when 'event_callback'
+       #   # Get the Team ID and Event data from the request object
+       #   team_id = request_data['team_id']
+       #   event_data = request_data['event']
 
          # Events have a "type" attribute included in their payload, allowing you to handle different
          # Event payloads as needed.
          case event_data['type']
-           when 'team_join'
-             # Event handler for when a user joins a team
-             Events.user_join(team_id, event_data)
-           when 'reaction_added'
-             # Event handler for when a user reacts to a message or item
-             Events.reaction_added(team_id, event_data)
-             p "REACTION!"
-           when 'pin_added'
-             # Event handler for when a user pins a message
-             Events.pin_added(team_id, event_data)
+           # when 'team_join'
+           #   # Event handler for when a user joins a team
+           #   Events.user_join(team_id, event_data)
+           # when 'reaction_added'
+           #   # Event handler for when a user reacts to a message or item
+           #   Events.reaction_added(team_id, event_data)
+           #   p "REACTION!"
+           # when 'pin_added'
+           #   # Event handler for when a user pins a message
+           #   Events.pin_added(team_id, event_data)
            when 'message'
              # Event handler for messages, including Share Message actions
              Events.message(team_id, event_data)
