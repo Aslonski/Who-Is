@@ -43,8 +43,10 @@ post '/slack' do
            when 'message'
              # Event handler for messages, including Share Message actions
              Events.message(team_id, event_data)
-            b = Events.message.inspect
-            p b
+            puts "REQUEST DATA"
+            puts JSON.pretty_generate(request_data)
+            puts "EVENT DATA"
+            puts JSON.pretty_generate(event_data)
            else
              # In the event we receive an event we didn't expect, we'll log it and move on.
              puts "Unexpected event:\n"
