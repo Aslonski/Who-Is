@@ -10,10 +10,11 @@ $zone = Time.now.getlocal.zone
 get '/' do
 end
 
-post '/slack_event' do 
+post '/slack' do 
   request.body.rewind
   @request_payload = JSON.parse request.body.read
-  @request_payload.body.challenge
+ @request_payload.challenge
+ 
 end
 
 # post '/' do
