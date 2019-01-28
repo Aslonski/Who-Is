@@ -3,6 +3,8 @@ require 'sinatra'
 require 'net/http'
 require 'intercom'
 require 'dotenv/load'
+require 'slack-ruby-client'
+
 
 # $intercom = Intercom::Client.new(token: ENV['ON-CALL-TOKEN'])
 # $zone = Time.now.getlocal.zone
