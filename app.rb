@@ -4,17 +4,17 @@ require 'net/http'
 require 'intercom'
 require 'dotenv/load'
 
-$intercom = Intercom::Client.new(token: ENV['ON-CALL-TOKEN'])
-$zone = Time.now.getlocal.zone
+# $intercom = Intercom::Client.new(token: ENV['ON-CALL-TOKEN'])
+# $zone = Time.now.getlocal.zone
 
 get '/' do
 end
 
 post '/slack' do 
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  p request.body.rewind
-  p @request_payload = JSON.parse(request.body.read)
-  p @request_payload["body"]["challenge"]
+  # p request.body.rewind
+  p @request_payload = JSON.parse(request.body.read)["challenge"]
+  p @request_payload
   
    
     puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
