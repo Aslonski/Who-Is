@@ -12,9 +12,10 @@ end
 
 post '/slack' do 
   request.body.rewind
-  @request_payload = JSON.parse request.body.read
- @request_payload.challenge
- 
+  request_payload = JSON.parse request.body.read
+  challenge = request_payload.challenge
+  challenge
+
 end
 
 # post '/' do
