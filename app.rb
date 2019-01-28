@@ -12,11 +12,9 @@ end
 
 post '/slack' do 
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  # p request.body.rewind
-  p @request_payload = JSON.parse(request.body.read)["challenge"]
-  p @request_payload
-  
-   
+ 
+   request_data = JSON.parse(request.body.read)
+   request_data['challenge']
     puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
 
 
