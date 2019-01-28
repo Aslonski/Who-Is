@@ -11,12 +11,12 @@ get '/' do
 end
 
 post '/slack' do 
-  request.body.rewind
-  @request_payload = JSON.parse(request.body.read)
-  @request_payload["body"]["challenge"]
-  
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  puts 
+  p request.body.rewind
+  p @request_payload = JSON.parse(request.body.read)
+  p @request_payload["body"]["challenge"]
+  
+   
     puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
 
 
