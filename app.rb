@@ -14,7 +14,7 @@ post '/slack' do
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
  
    request_data = JSON.parse(request.body.read)
-   request_data['challenge']
+   p request_data
     # case request_data['type']
     # when 'url_verification'
       # When we receive a `url_verification` event, we need to
