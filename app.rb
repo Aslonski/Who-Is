@@ -14,7 +14,7 @@ post '/slack' do
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
  
    request_data = JSON.parse(request.body.read)
-   p request_data
+   p request_data['type']
     # case request_data['type']
     # when 'url_verification'
       # When we receive a `url_verification` event, we need to
@@ -41,12 +41,12 @@ end
 # 	Updated at: *#{$time}* *#{$zone}*"
   
 #   if $all_convos == 0
-#   	$response = "Woot woot! On-call inbox is empty! 😎 \\n
+#   	$response = "Woot woot! On-call inbox is empty!  \\n
 #   	Updated at: *#{$time}* *#{$zone}*"
 #   end
 #   if $all_convos >= 10
 #   	$response = "Current ongoing conversations: *#{$all_convos}*\\n
-#   	Response time might be a bit longer 😅\\n
+#   	Response time might be a bit longer \\n
 # 	Updated at: *#{$time}* *#{$zone}*"
 #   end
 
