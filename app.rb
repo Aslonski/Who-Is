@@ -13,9 +13,10 @@ end
 post '/slack' do 
   request.body.rewind
   request_payload = JSON.parse request.body.read
+  request_payload[challenge]
   
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-  puts request_payload
+  puts 
     puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
 
 
