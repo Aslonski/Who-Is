@@ -4,6 +4,7 @@ GEM
     dotenv (2.6.0)
     intercom (3.7.3)
     mustermann (1.0.3)
+    puma (3.12.0)
     rack (2.0.6)
     rack-protection (2.0.5)
       rack
@@ -20,6 +21,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   intercom
+  puma
   sinatra
 
 RUBY VERSION
