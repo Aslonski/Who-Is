@@ -14,6 +14,7 @@ end
 
 post '/slack' do 
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+   request_data = JSON.parse(request.body.read)
  case request_data['type']
        # When you enter your Events webhook URL into your app's Event Subscription settings, Slack verifies the
        # URL's authenticity by sending a challenge token to your endpoint, expecting your app to echo it back.
@@ -51,7 +52,6 @@ post '/slack' do
          # Return HTTP status code 200 so Slack knows we've received the Event
          status 200
      end
-   # request_data = JSON.parse(request.body.read)
    # p request_data['type']
     # case request_data['type']
     # when 'url_verification'
