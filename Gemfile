@@ -3,5 +3,5 @@ gem 'sinatra'
 gem 'intercom'
 gem 'dotenv'
 
-ruby '2.5.3'
+ruby '2.4.5'
 
