@@ -42,8 +42,8 @@ post '/slack' do
            #   Events.pin_added(team_id, event_data)
            when 'message'
              # Event handler for messages, including Share Message actions
-             Events.message(team_id, event_data)
-             p event_data
+            p Events.message(team_id, event_data)
+            
            else
              # In the event we receive an event we didn't expect, we'll log it and move on.
              puts "Unexpected event:\n"
