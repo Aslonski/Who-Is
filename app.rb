@@ -15,7 +15,14 @@ post '/slack' do
  
    request_data = JSON.parse(request.body.read)
    request_data['challenge']
-    puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+    # case request_data['type']
+    # when 'url_verification'
+      # When we receive a `url_verification` event, we need to
+      # return the same `challenge` value sent to us from Slack
+      # to confirm our server's authenticity.
+      # request_data['challenge']
+    # end
+    # puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
 
 
 end
