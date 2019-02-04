@@ -11,6 +11,8 @@ $intercom = Intercom::Client.new(token: ENV['TOKEN'])
 
 get '/' do
 end
+  
+
 
 post '/slack' do 
   puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
@@ -21,17 +23,15 @@ post '/slack' do
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
     $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
-    $intercom.messages.create(
-  :from => {
-    :type => "user",
-    :id => "5879561d297e35032e336f16"
-  },
-  :body => "#{request_data}"
-)
+
    # end
   status 200
 end
 
+
+get 'https://slack.com/api/users.profile.get?token=#{ENV['SLACK-OAUTH']}&user=U328BLX88&pretty=1' do
+$real_name = JSON.parse(request.body.read)['profile']['real_name']
+end
 #  case request_data['type']
 #        # When you enter your Events webhook URL into your app's Event Subscription settings, Slack verifies the
 #        # URL's authenticity by sending a challenge token to your endpoint, expecting your app to echo it back.
@@ -85,6 +85,14 @@ end
 
 # end
 
+    $intercom.messages.create(
+  :from => {
+    :type => "user",
+    :id => "5879561d297e35032e336f16"
+  },
+  :body => "#{$currently_on_call}, #{$real_name}"
+)
+
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
  	text.to_json
@@ -108,7 +116,7 @@ post '/live_canvas' do
 	Updated at: *#{$time}* *#{$zone}*"
   end
 
-	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"#{$response}  #{$currently_on_call}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
+	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$real_name}\n#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
  	text.to_json
 	text
 end
