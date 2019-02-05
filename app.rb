@@ -17,16 +17,16 @@ end
 
 post '/slack' do 
   # puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-   # request_data = JSON.parse(request.body.read)
+   request_data = JSON.parse(request.body.read)
    # p request_data
    # text_data = JSON.pretty_generate(request_data)["text"]
    # p text_data
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
-    # $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
+    $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
 
-   # end
-  # status 200
+   end
+  status 200
   return get_real_user
 end
 
