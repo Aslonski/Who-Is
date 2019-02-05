@@ -30,7 +30,7 @@ post '/slack' do
   return get_real_user
 end
 
-def get_real_user(slack_user_id)
+def get_real_user
   response = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: "U328BLX88", pretty: 1})
     $real_name = response['profile']['real_name']
