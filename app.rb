@@ -12,26 +12,29 @@ $intercom = Intercom::Client.new(token: ENV['TOKEN'])
 
 get '/' do
 end
-  
+
 
 
 post '/slack' do 
-  puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-   request_data = JSON.parse(request.body.read)
+  # puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
+   # request_data = JSON.parse(request.body.read)
    # p request_data
    # text_data = JSON.pretty_generate(request_data)["text"]
    # p text_data
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
-    $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
+    # $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
 
    # end
-  status 200
+  # status 200
+  return get_real_user
 end
 
-
-HTTParty.post "https://slack.com/api/users.profile.get?token=#{ENV['SLACK-OAUTH']}&user=U328BLX88&pretty=1"
-$real_name = JSON.parse(request.body.read)['profile']['real_name']
+def get_real_user
+  HTTParty.post("https://slack.com/api/users.profile.get?token=#{ENV['SLACK-OAUTH']}&user=U328BLX88&pretty=1")
+  $real_name = JSON.parse(request.body.read)['profile']['real_name']
+  $real_name
+end
 
 
 #  case request_data['type']
