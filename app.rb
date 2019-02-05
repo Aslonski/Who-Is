@@ -19,18 +19,18 @@ post '/slack' do
   # puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
    request_data = JSON.parse(request.body.read)
    # p request_data
-   # text_data = JSON.pretty_generate(request_data)["text"]
-   # p text_data
+   $text_data = JSON.pretty_generate(request_data)["text"]
+   p $text_data
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
     $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
-
+    p $currently_on_call
    # end
   status 200
   return get_real_user
 end
 
-def get_real_user
+def get_real_user(slack_user_id)
   response = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: "U328BLX88", pretty: 1})
     $real_name = response['profile']['real_name']
@@ -90,14 +90,15 @@ end
 
 
 # end
-
+def send_message_to_intercom
     $intercom.messages.create(
   :from => {
     :type => "user",
     :id => "5879561d297e35032e336f16"
   },
-  :body => "#{$currently_on_call}, #{$real_name}"
+  :body => "#{$currently_on_call} #{$real_name} #{$text_data}"
 )
+  end
 
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
