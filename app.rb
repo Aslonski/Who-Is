@@ -32,7 +32,7 @@ end
 
 def get_real_user
   HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: "U328BLX88", pretty: 1}
+    query: {token: ENV['SLACK-OAUTH'], user: "U328BLX88", pretty: 1})
     
   $real_name = JSON.parse(request.body.read)['profile']['real_name']
   $real_name
