@@ -3,6 +3,7 @@ require 'sinatra'
 require 'net/http'
 require 'intercom'
 require 'dotenv/load'
+require 'httparty'
 # require 'slack-ruby-client'
 
 
@@ -29,10 +30,10 @@ post '/slack' do
 end
 
 
-post "https://slack.com/api/users.profile.get?token=#{ENV['SLACK-OAUTH']}&user=U328BLX88&pretty=1" do
+HTTParty.post "https://slack.com/api/users.profile.get?token=#{ENV['SLACK-OAUTH']}&user=U328BLX88&pretty=1" do
 $real_name = JSON.parse(request.body.read)['profile']['real_name']
-status 200
-end
+
+
 #  case request_data['type']
 #        # When you enter your Events webhook URL into your app's Event Subscription settings, Slack verifies the
 #        # URL's authenticity by sending a challenge token to your endpoint, expecting your app to echo it back.
