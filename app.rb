@@ -25,7 +25,7 @@ post '/slack' do
    # if request_data['event']['type'] == "app_mention"
     $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
 
-   end
+   # end
   status 200
   return get_real_user
 end
