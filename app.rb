@@ -29,7 +29,7 @@ post '/slack' do
 end
 
 
-get 'https://slack.com/api/users.profile.get?token=#{ENV['SLACK-OAUTH']}&user=U328BLX88&pretty=1' do
+post 'https://slack.com/api/users.profile.get?token=#{ENV["SLACK-OAUTH"]}&user=U328BLX88&pretty=1' do
 $real_name = JSON.parse(request.body.read)['profile']['real_name']
 end
 #  case request_data['type']
