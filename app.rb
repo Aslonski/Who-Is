@@ -57,6 +57,7 @@ end
 def extract_slack_ids
    regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
    return regex.captures
+   p regex[1]
 end
 
 #  case request_data['type']
