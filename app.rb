@@ -24,12 +24,13 @@ post '/slack' do
    # p $text_data
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
-    $channel_topic = "CSE on-call: #{$cse_name}"
+    $channel_topic = "CSE on-call: #{request_data['event']['text']}"
     # p $channel_topic
     # p extract_slack_ids
    # end
   status 200
   get_real_user(extract_slack_ids)
+  p extract_slack_ids
 end
 
 def get_real_user(*array_of_ids)
@@ -144,7 +145,7 @@ post '/live_canvas' do
 	Updated at: *#{$time}* *#{$zone}*"
   end
 
-	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$real_name}\n#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
+	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\n#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
  	text.to_json
 	text
 end
