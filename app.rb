@@ -43,7 +43,7 @@ def get_real_user(*array_of_ids)
     $cse_name = "N/A"
   else
     $cse_name = cse['profile']['real_name']
-    $cse_img = cse['profile']['image_192']
+    $cse_img = cse['profile']['image_64']
   end
   if csr.parsed_response['error']
     $csr_name = "N/A"
