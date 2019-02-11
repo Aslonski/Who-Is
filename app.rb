@@ -145,7 +145,7 @@ post '/live_canvas' do
   	Response time might be a bit longer \\n
 	Updated at: *#{$time}* *#{$zone}*"
   end
-list_text = "{\"content\":{\"components\":[{\"type\":\"list\",\"disabled\":\"true\",\"items\":[{\"type\":\"item\",\"id\":\"list-of-oncall\",\"title\":\"CSE on call\",\"subtitle\":\"#{cse_name}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"roundedImage\":true}]}]}}"
+list_text = "{\"content\":{\"components\":[{\"id\":\"ab1\",\"type\":\"list\",\"disabled\":\"true\",\"items\":[{\"type\":\"item\",\"id\":\"list-of-oncall\",\"title\":\"CSE on call\",\"subtitle\":\"#{cse_name}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"roundedImage\":true}]}]}}"
 
 
 	# text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"slack-image\",\"type\":\"image\",\"url\":\"#{$cse_img}\",\"align\":\"right\",\"width\":48,\"height\":48,\"rounded\":true},{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"}]}}"
