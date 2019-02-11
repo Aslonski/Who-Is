@@ -25,8 +25,8 @@ post '/slack' do
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
     $channel_topic = "Currently on-call: #{request_data['event']['text']}"
-    p $channel_topic
-    p extract_slack_ids
+    # p $channel_topic
+    # p extract_slack_ids
    # end
   status 200
   get_real_user(extract_slack_ids)
@@ -34,12 +34,22 @@ end
 
 def get_real_user(*array_of_ids)
   cse = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0], pretty: 1})
+    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][0], pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[1], pretty: 1})
-  
+    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][1], pretty: 1})
+  # p cse
+  if cse.parsed_response['error']
+    $cse_name = "N/A"
+  else
     $cse_name = cse['profile']['real_name']
+  end
+  if csr.parsed_response['error']
+    $csr_name = "N/A"
+  else
     $csr_name = csr['profile']['real_name']
+  end
+     
+   
   p $cse_name
   p $csr_name
 end
