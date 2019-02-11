@@ -13,7 +13,7 @@ $intercom = Intercom::Client.new(token: ENV['TOKEN'])
 get '/' do
 end
 
-# image   {\"id\":\"welcome-link\",\"type\":\"image\",\"url\":\"https://downloads.intercomcdn.com/i/o/86160844/0f0f53fbdb1c741e2f7bca83/link.jpg\",\"align\":\"center\",\"width\":130,\"height\":130,\"rounded\":true}
+# image   {\"id\":\"welcome-link\",\"type\":\"image\",\"url\":\"https://downloads.intercomcdn.com/i/o/86160844/0f0f53fbdb1c741e2f7bca83/link.jpg\",\"align\":\"right\",\"width\":130,\"height\":130,\"rounded\":true}
 
 
 post '/slack' do 
@@ -43,6 +43,7 @@ def get_real_user(*array_of_ids)
     $cse_name = "N/A"
   else
     $cse_name = cse['profile']['real_name']
+    $cse_img = cse['profile']['image_192']
   end
   if csr.parsed_response['error']
     $csr_name = "N/A"
@@ -145,7 +146,7 @@ post '/live_canvas' do
 	Updated at: *#{$time}* *#{$zone}*"
   end
 
-	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\"},{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
+	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\"},{\"id\":\"slack-image\",\"type\":\"image\",\"url\":\"#{$cse_img}\",\"align\":\"right\",\"width\":130,\"height\":130,\"rounded\":true},{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
  	text.to_json
 	text
 end
