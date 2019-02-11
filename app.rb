@@ -146,7 +146,7 @@ post '/live_canvas' do
 	Updated at: *#{$time}* *#{$zone}*"
   end
 
-	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"slack-image\",\"type\":\"image\",\"url\":\"#{$cse_img}\",\"align\":\"right\",\"rounded\":true},{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
+	text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"slack-image\",\"type\":\"image\",\"url\":\"#{$cse_img}\",\"align\":\"right\",\"width\":130,\"height\":130,\"rounded\":true},{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false}]}}"
  	text.to_json
 	text
   # \"width\":130,\"height\":130,
