@@ -24,12 +24,13 @@ post '/slack' do
    # p $text_data
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
-    $channel_topic = "Currently on-call: #{request_data['event']['text']}"
+    $channel_topic = "CSE on-call: #{$cse_name}"
     # p $channel_topic
     # p extract_slack_ids
    # end
   status 200
   get_real_user(extract_slack_ids)
+  p extract_slack_ids
 end
 
 def get_real_user(*array_of_ids)
@@ -57,7 +58,6 @@ end
 def extract_slack_ids
    regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
    return regex.captures
-   p regex[1]
 end
 
 #  case request_data['type']
