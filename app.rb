@@ -13,6 +13,7 @@ $intercom = Intercom::Client.new(token: ENV['TOKEN'])
 get '/' do
 end
 
+# image   {\"id\":\"welcome-link\",\"type\":\"image\",\"url\":\"https://downloads.intercomcdn.com/i/o/86160844/0f0f53fbdb1c741e2f7bca83/link.jpg\",\"align\":\"center\",\"width\":130,\"height\":130,\"rounded\":true}
 
 
 post '/slack' do 
@@ -42,7 +43,7 @@ def get_real_user(*extract_slack_ids)
 end
 
 def extract_slack_ids
-   regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)})
+   regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
    regex.captures
    # regex[1]
    # regex[2]
