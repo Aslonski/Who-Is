@@ -27,21 +27,25 @@ post '/slack' do
     p $channel_topic
    # end
   status 200
-  return get_real_user
-  return extract_slack_id
+  get_real_user
+   # extract_slack_ids
 end
 
-def get_real_user
-  response = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: "U328BLX88", pretty: 1})
-    $real_name = response['profile']['real_name']
-    $real_name
+def get_real_user(*extract_slack_ids)
+  cse = HTTParty.post("https://slack.com/api/users.profile.get",
+    query: {token: ENV['SLACK-OAUTH'], user: "extract_slack_ids[0]", pretty: 1})
+  csr = HTTParty.post("https://slack.com/api/users.profile.get",
+    query: {token: ENV['SLACK-OAUTH'], user: "extract_slack_ids[1]", pretty: 1})
+    $cse_name = cse['profile']['real_name']
+    $csr_name = cse['profile']['real_name']
+    p cse
 end
 
-def extract_slack_id
+def extract_slack_ids
    regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)})
-   regex[1]
-   regex[2]
+   regex.captures
+   # regex[1]
+   # regex[2]
 end
 
 #  case request_data['type']
