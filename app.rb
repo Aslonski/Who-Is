@@ -37,6 +37,7 @@ def get_real_user(*array_of_ids)
     query: {token: ENV['SLACK-OAUTH'], user: "array_of_ids[0]", pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: "array_of_ids[1]", pretty: 1})
+  p cse csr
     $cse_name = cse['profile']['real_name']
     $csr_name = csr['profile']['real_name']
     p cse
