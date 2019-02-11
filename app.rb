@@ -23,20 +23,26 @@ post '/slack' do
    p $text_data
    # p "hi"
    # if request_data['event']['type'] == "app_mention"
-    $currently_on_call = "Currently on-call: #{request_data['event']['text']}"
-    p $currently_on_call
+    $channel_topic = "Currently on-call: #{request_data['event']['text']}"
+    p $channel_topic
    # end
   status 200
   return get_real_user
+  return extract_slack_id
 end
 
 def get_real_user
   response = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: "U328BLX88", pretty: 1})
     $real_name = response['profile']['real_name']
-   puts $real_name
+    $real_name
 end
 
+def extract_slack_id
+   regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)})
+   regex[1]
+   regex[2]
+end
 
 #  case request_data['type']
 #        # When you enter your Events webhook URL into your app's Event Subscription settings, Slack verifies the
