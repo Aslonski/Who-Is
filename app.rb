@@ -4,33 +4,21 @@ require 'net/http'
 require 'intercom'
 require 'dotenv/load'
 require 'httparty'
-# require 'slack-ruby-client'
 
 
 $intercom = Intercom::Client.new(token: ENV['TOKEN'])
-# $zone = Time.now.getlocal.zone
+$zone = Time.now.getlocal.zone
 
 get '/' do
 end
 
-# image   {\"id\":\"welcome-link\",\"type\":\"image\",\"url\":\"https://downloads.intercomcdn.com/i/o/86160844/0f0f53fbdb1c741e2f7bca83/link.jpg\",\"align\":\"right\",\"width\":130,\"height\":130,\"rounded\":true}
 
 
 post '/slack' do 
-  # puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-   request_data = JSON.parse(request.body.read)
-   # p request_data
-   # $text_data = JSON.pretty_generate(request_data)["text"]
-   # p $text_data
-   # p "hi"
-   # if request_data['event']['type'] == "app_mention"
-    $channel_topic = "CSE on-call: #{request_data['event']['text']}"
-    # p $channel_topic
-    # p extract_slack_ids
-   # end
+  request_data = JSON.parse(request.body.read)
+  $channel_topic = "CSE on-call: #{request_data['event']['text']}"
   status 200
   get_real_user(extract_slack_ids)
-  # p extract_slack_ids
 end
 
 def get_real_user(*array_of_ids)
@@ -38,15 +26,16 @@ def get_real_user(*array_of_ids)
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][0], pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][1], pretty: 1})
-  # p cse
   if cse.parsed_response['error']
     $cse_name = "N/A"
+    $cse_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
   else
     $cse_name = cse['profile']['real_name']
     $cse_img = cse['profile']['image_192']
   end
   if csr.parsed_response['error']
     $csr_name = "N/A"
+    $csr_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
   else
     $csr_name = csr['profile']['real_name']
     $csr_img = csr['profile']['image_192']
@@ -61,58 +50,7 @@ def extract_slack_ids
    return regex.captures
 end
 
-#  case request_data['type']
-#        # When you enter your Events webhook URL into your app's Event Subscription settings, Slack verifies the
-#        # URL's authenticity by sending a challenge token to your endpoint, expecting your app to echo it back.
-#        # More info: https://api.slack.com/events/url_verification
-#        when 'url_verification'
-#          request_data['challenge']
 
-#        # when 'event_callback'
-#        #   # Get the Team ID and Event data from the request object
-#        #   team_id = request_data['team_id']
-#        #   event_data = request_data['event']
-
-#          # Events have a "type" attribute included in their payload, allowing you to handle different
-#          # Event payloads as needed.
-#          case event_data['type']
-#            # when 'team_join'
-#            #   # Event handler for when a user joins a team
-#            #   Events.user_join(team_id, event_data)
-#            # when 'reaction_added'
-#            #   # Event handler for when a user reacts to a message or item
-#            #   Events.reaction_added(team_id, event_data)
-#            #   p "REACTION!"
-#            # when 'pin_added'
-#            #   # Event handler for when a user pins a message
-#            #   Events.pin_added(team_id, event_data)
-#            when 'message'
-#              # Event handler for messages, including Share Message actions
-#              Events.message(team_id, event_data)
-#             puts "REQUEST DATA"
-#             puts JSON.pretty_generate(request_data)
-#             puts "EVENT DATA"
-#             puts JSON.pretty_generate(event_data)
-#            else
-#              # In the event we receive an event we didn't expect, we'll log it and move on.
-#              puts "Unexpected event:\n"
-#              puts JSON.pretty_generate(request_data)
-#          end
-#          # Return HTTP status code 200 so Slack knows we've received the Event
-#          status 200
-#      end
-#    # p request_data['type']
-#     # case request_data['type']
-#     # when 'url_verification'
-#       # When we receive a `url_verification` event, we need to
-#       # return the same `challenge` value sent to us from Slack
-#       # to confirm our server's authenticity.
-#       # request_data['challenge']
-#     # end
-#     # puts "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
-
-
-# end
 def send_message_to_intercom
     $intercom.messages.create(
   :from => {
@@ -161,20 +99,4 @@ text
   # \"width\":130,\"height\":130,
 end
 
-# {
-#   type: "list",
-#   disabled: "true",
-#   items: [
-#     {
-#       type: "item",
-#       id: "list-of-oncall",
-#       title: "CSE on call",
-#       subtitle: "#{cse_name}",
-#       image: "#{cse_img}",
-#       image_width: 48,
-#       image_height: 48,
-#       roundedImage: true,
-#     }
-#   ]
-# }
- 
+#
