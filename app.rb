@@ -145,7 +145,7 @@ post '/live_canvas' do
   	Response time might be a bit longer \\n
 	Updated at: *#{$time}* *#{$zone}*"
   end
-text = "{\"content\":{\"components\":[{\"type\":\"list\",\"disabled\":true,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"roundedImage\":true,\"disabled\":true,\"action\":{\"type\":\"submit\"}}]}]}}"
+text = "{\"content\":{\"components\":[{\"type\":\"list\",\"disabled\":true,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded\":true}]}]}}"
 text.to_json
 text
 
