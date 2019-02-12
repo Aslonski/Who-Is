@@ -30,7 +30,7 @@ post '/slack' do
    # end
   status 200
   get_real_user(extract_slack_ids)
-  p extract_slack_ids
+  # p extract_slack_ids
 end
 
 def get_real_user(*array_of_ids)
@@ -49,11 +49,11 @@ def get_real_user(*array_of_ids)
     $csr_name = "N/A"
   else
     $csr_name = csr['profile']['real_name']
+    $csr_img = csr['profile']['image_192']
   end
      
    
-  p $cse_name
-  p $csr_name
+ 
 end
 
 def extract_slack_ids
@@ -145,7 +145,7 @@ post '/live_canvas' do
   	Response time might be a bit longer \\n
 	Updated at: *#{$time}* *#{$zone}*"
   end
-text = "{\"content\":{\"components\":[{\"type\":\"list\",\"disabled\":true,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
+text = "{\"content\":{\"components\":[{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 text.to_json
 text
 
