@@ -51,16 +51,6 @@ def extract_slack_ids
 end
 
 
-def send_message_to_intercom
-    $intercom.messages.create(
-  :from => {
-    :type => "user",
-    :id => "5879561d297e35032e336f16"
-  },
-  :body => "#{$currently_on_call} #{$real_name} #{$text_data}"
-)
-  end
-
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
  	text.to_json
@@ -70,20 +60,20 @@ end
 post '/live_canvas' do
   content_type 'application/json'
 	$time = Time.now.strftime("%H:%M")
+  $updated_at = "Updated at: *#{$time}* *#{$zone}*"
   $all_convos = $intercom.counts.for_type(type: 'conversation').conversation["open"]
-	$response = "Current ongoing conversations: *#{$all_convos}*\\n
-	Updated at: *#{$time}* *#{$zone}*"
+	$response = "Current ongoing conversations: *#{$all_convos}*"
   
   if $all_convos == 0
-  	$response = "Woot woot! On-call inbox is empty!  \\n
-  	Updated at: *#{$time}* *#{$zone}*"
+  	$response = "Woot woot! On-call inbox is empty!"
+  	
   end
   if $all_convos >= 10
-  	$response = "Current ongoing conversations: *#{$all_convos}*\\n
-  	Response time might be a bit longer \\n
-	Updated at: *#{$time}* *#{$zone}*"
+  	$response = "Current ongoing conversations: *#{$all_convos}*
+  	Response time might be a bit longer"
+	
   end
-text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSR on call:\",\"subtitle\":\"#{$csr_name}\",\"image\":\"#{$csr_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
+text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{$updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSR on call:\",\"subtitle\":\"#{$csr_name}\",\"image\":\"#{$csr_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 text.to_json
 text
 
