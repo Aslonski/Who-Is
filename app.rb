@@ -5,14 +5,11 @@ require 'intercom'
 require 'dotenv/load'
 require 'httparty'
 
-
 $intercom = Intercom::Client.new(token: ENV['TOKEN'])
 $zone = Time.now.getlocal.zone
 
 get '/' do
 end
-
-
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
@@ -41,18 +38,14 @@ def get_real_user(*array_of_ids)
   else
     $csr_name = csr['profile']['real_name']
     $csr_img = csr['profile']['image_192']
-  end
-     
-   
- 
+  end 
 end
 
 def extract_slack_ids
-   regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
-   return regex.captures
+  if $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m).captures
+   return 
    puts " REGEX CAPTURES: #{regex.captures}"
 end
-
 
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
@@ -68,28 +61,18 @@ post '/live_canvas' do
 	$response = "Current ongoing conversations: *#{$all_convos}*"
   
   if $all_convos == 0
-  	$response = "Woot woot! On-call inbox is empty!"
-  	
+  	$response = "Woot woot! On-call inbox is empty! 🥳"
   end
+
   if $all_convos >= 10
   	$response = "Current ongoing conversations: *#{$all_convos}*
-  	Response time might be a bit longer"
-	
+  	Response time might be a bit longer 😅"
   end
+
 text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{$updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSR on call:\",\"subtitle\":\"#{$csr_name}\",\"image\":\"#{$csr_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 text.to_json
 text
 
-
-# "{\"content\":{\"components\":[{\"type\":\"list\",\"disabled\":true,\"items\":[{\"type\":\"item\",\"id\":\"list-of-oncall\",\"title\":\"CSE on call\",\"subtitle\":\"#{cse_name}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"roundedImage\":true}]}]}}"
-
-
-	# text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d25779a24e25b2e97b4\",\"type\":\"text\",\"text\":\"CSE on call: #{$cse_name}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"slack-image\",\"type\":\"image\",\"url\":\"#{$cse_img}\",\"align\":\"right\",\"width\":48,\"height\":48,\"rounded\":true},{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"}]}}"
- # 	text.to_json
- #  text
-# list_text.to_json
-#   list_text
-  # \"width\":130,\"height\":130,
 end
 
 #
