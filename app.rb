@@ -14,8 +14,9 @@ end
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   $channel_topic = "CSE on-call: #{request_data['event']['text']}"
+  puts "#{request_data['event']['text']}"
   status 200
-  extract_slack_ids
+  # extract_slack_ids
   get_real_user(extract_slack_ids)
 end
 
@@ -45,7 +46,7 @@ end
 def extract_slack_ids
   regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
     puts " REGEX CAPTURES: #{regex.captures}"
-    return regex.captures
+    return regex.captures rescue[]
   
 end
 
