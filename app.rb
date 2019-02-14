@@ -18,6 +18,7 @@ post '/slack' do
   request_data = JSON.parse(request.body.read)
   $channel_topic = "CSE on-call: #{request_data['event']['text']}"
   status 200
+  extract_slack_ids
   get_real_user(extract_slack_ids)
 end
 
