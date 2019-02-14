@@ -44,9 +44,12 @@ def get_real_user(*array_of_ids)
 end
 
 def extract_slack_ids
-
-  cse_regex = $channel_topic.match(%r{CSE on call: <@(\w+)}m).captures rescue "fake cse id" 
-  csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m).captures rescue "fake csr id" 
+  cse_regex = $channel_topic.match(%r{CSE on call: <@(\w+)}m)
+  csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m)
+# debugger 
+  cse_regex = cse_regex ? cse_regex.captures : "fake cse id" 
+  csr_regex = csr_regex ? csr_regex.captures : "fake csr id" 
+  # csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m).captures rescue "fake csr id" 
     # puts " REGEX CAPTURES: #{regex.captures}"
     return [cse_regex,csr_regex] 
   
