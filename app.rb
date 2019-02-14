@@ -21,6 +21,7 @@ post '/slack' do
 end
 
 def get_real_user(*array_of_ids)
+  puts "ARRAY OF IDS: #{array_of_ids}"
   cse = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][0], pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
@@ -51,7 +52,7 @@ def extract_slack_ids
   csr_regex = csr_regex ? csr_regex.captures : "fake csr id" 
   # csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m).captures rescue "fake csr id" 
     puts " REGEX CAPTURES: #{cse_regex}, #{csr_regex}"
-    return [cse_regex,csr_regex] 
+    return cse_regex + csr_regex
   
 end
 
