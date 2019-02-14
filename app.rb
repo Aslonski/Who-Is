@@ -42,10 +42,10 @@ def get_real_user(*array_of_ids)
 end
 
 def extract_slack_ids
-  if $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m).captures
-    return 
+  regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
+    return regex.captures
     puts " REGEX CAPTURES: #{regex.captures}"
-  end
+  
 end
 
 post '/' do
