@@ -50,7 +50,7 @@ def extract_slack_ids
   cse_regex = cse_regex ? cse_regex.captures : "fake cse id" 
   csr_regex = csr_regex ? csr_regex.captures : "fake csr id" 
   # csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m).captures rescue "fake csr id" 
-    # puts " REGEX CAPTURES: #{regex.captures}"
+    puts " REGEX CAPTURES: #{cse_regex}, #{csr_regex}"
     return [cse_regex,csr_regex] 
   
 end
