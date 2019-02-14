@@ -14,9 +14,7 @@ end
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   $channel_topic = "CSE on-call: #{request_data['event']['text']}"
-  puts "#{request_data['event']['text']}"
   status 200
-  # extract_slack_ids
   get_real_user(extract_slack_ids)
 end
 
@@ -26,8 +24,6 @@ def get_real_user(array_of_ids)
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0], pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[1], pretty: 1})
-  puts "CSE #{cse}"
-  puts "CSE PARSED RESPONSE #{cse.parsed_response}"
   if cse.parsed_response['error']
     $cse_name = "N/A"
     $cse_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
@@ -47,18 +43,13 @@ end
 def extract_slack_ids
   cse_regex = $channel_topic.match(%r{CSE on call: <@(\w+)}m)
   csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m)
-# debugger 
   cse_regex = cse_regex ? cse_regex.captures : ["fakeid"]
   csr_regex = csr_regex ? csr_regex.captures : ["fakeid"]
-  # csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m).captures rescue "fake csr id" 
-    puts " REGEX CAPTURES: #{cse_regex}, #{csr_regex}"
-    return cse_regex + csr_regex
-  
+  return cse_regex + csr_regex
 end
 
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
- 	text.to_json
 	text
 end
 
@@ -78,10 +69,6 @@ post '/live_canvas' do
   	Response time might be a bit longer 😅"
   end
 
-text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{$updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSR on call:\",\"subtitle\":\"#{$csr_name}\",\"image\":\"#{$csr_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
-text.to_json
-text
-
+  text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{$updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{$cse_name}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSR on call:\",\"subtitle\":\"#{$csr_name}\",\"image\":\"#{$csr_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
+  text
 end
-
-#
