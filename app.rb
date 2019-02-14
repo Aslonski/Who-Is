@@ -20,12 +20,12 @@ post '/slack' do
   get_real_user(extract_slack_ids)
 end
 
-def get_real_user(*array_of_ids)
+def get_real_user(array_of_ids)
   puts "ARRAY OF IDS: #{array_of_ids}"
   cse = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][0], pretty: 1})
+    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0], pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][1], pretty: 1})
+    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[1], pretty: 1})
   puts "CSE #{cse}"
   puts "CSE PARSED RESPONSE #{cse.parsed_response}"
   if cse.parsed_response['error']
