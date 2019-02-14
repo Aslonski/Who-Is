@@ -24,6 +24,7 @@ def get_real_user(*array_of_ids)
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][0], pretty: 1})
   csr = HTTParty.post("https://slack.com/api/users.profile.get",
     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0][1], pretty: 1})
+  puts "CSE #{cse}"
   puts "CSE PARSED RESPONSE #{cse.parsed_response}"
   if cse.parsed_response['error']
     $cse_name = "N/A"
@@ -43,8 +44,8 @@ end
 
 def extract_slack_ids
   regex = $channel_topic.match(%r{CSE on call: <@(\w+).+<@(\w+)}m)
-    return regex.captures
     puts " REGEX CAPTURES: #{regex.captures}"
+    return regex.captures
   
 end
 
