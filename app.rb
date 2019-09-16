@@ -17,37 +17,40 @@ post '/slack' do
   $channel_topic = "#{request_data['event']['text']}"
   status 200
   p $channel_topic
-  get_real_user(extract_slack_ids)
+  # get_real_user(extract_slack_ids)
+  p extract_names_from_topic
 end
 
 
-def get_real_user(array_of_ids)
-  cse = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0], pretty: 1})
-  csr = HTTParty.post("https://slack.com/api/users.profile.get",
-    query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[1], pretty: 1})
-  if cse.parsed_response['error']
-    $cse_name = "N/A"
-    $cse_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
-  else
-    $cse_name = cse['profile']['real_name']
-    $cse_img = cse['profile']['image_192']
-  end
-  if csr.parsed_response['error']
-    $csr_name = "N/A"
-    $csr_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
-  else
-    $csr_name = csr['profile']['real_name']
-    $csr_img = csr['profile']['image_192']
-  end 
-end
+# def get_real_user(array_of_ids)
+#   cse = HTTParty.post("https://slack.com/api/users.profile.get",
+#     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[0], pretty: 1})
+#   csr = HTTParty.post("https://slack.com/api/users.profile.get",
+#     query: {token: ENV['SLACK-OAUTH'], user: array_of_ids[1], pretty: 1})
+#   if cse.parsed_response['error']
+#     $cse_name = "N/A"
+#     $cse_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
+#   else
+#     $cse_name = cse['profile']['real_name']
+#     $cse_img = cse['profile']['image_192']
+#   end
+#   if csr.parsed_response['error']
+#     $csr_name = "N/A"
+#     $csr_img = "https://downloads.intercomcdn.com/i/o/102767128/61befae4699e11c05edf1661/shrug.png"
+#   else
+#     $csr_name = csr['profile']['real_name']
+#     $csr_img = csr['profile']['image_192']
+#   end 
+# end
 
-def extract_slack_ids
-  cse_regex = $channel_topic.match(%r{CSE on call: <@(\w+)}m)
-  csr_regex = $channel_topic.match(%r{CSR on call: <@(\w+)}m)
-  cse_regex = cse_regex ? cse_regex.captures : ["fakeid"]
-  csr_regex = csr_regex ? csr_regex.captures : ["fakeid"]
-  return cse_regex + csr_regex
+def extract_names_from_topic
+  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
+  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
+  bs_name = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
+  cse_name = cse_name ? cse_name.captures : ["fakeid"]
+  css_name = css_name ? css_name.captures : ["fakeid"]
+  bs_name = bs_name ? bs_name.captures : ["fakeid"]
+  return cse_name + css_name + bs_name
 end
 
 # Need to match this format: "*CSE*:  Tové | *CSS*: Ashlie | *Billing Specialist*: Ashlie"
