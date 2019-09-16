@@ -6,5 +6,5 @@ gem 'puma'
 gem 'httparty'
 gem 'bundler'
 
-ruby '2.4.6'
+ruby '2.6.3'
 
