@@ -5,5 +5,5 @@ gem 'dotenv'
 gem 'puma'
 gem 'httparty'
 
-ruby '2.4.5'
+ruby '2.4.6'
 
