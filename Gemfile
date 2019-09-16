@@ -4,7 +4,7 @@ gem 'intercom'
 gem 'dotenv'
 gem 'puma'
 gem 'httparty'
-gem 'bundler'
+# gem 'bundler'
 
 ruby '2.6.3'
 
