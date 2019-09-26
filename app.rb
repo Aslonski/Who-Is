@@ -17,8 +17,8 @@ end
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
-  channel_topic = "#{request_data['event']['text']}"
-  extract_names_from_topic(channel_topic)
+  $channel_topic = "#{request_data['event']['text']}"
+  # extract_names_from_topic(channel_topic)
   # pull a segment of on-call users from Intercom
   # compare the segment against the data from the extracted names
   # make a method to update the on-call data in Intercom based on the above
@@ -26,10 +26,10 @@ post '/slack' do
 end
 
 
-def extract_names_from_topic(channel_topic)
-  cse_name = channel_topic.match(%r{CSE\*\: (\w+)}m)
-  css_name = channel_topic.match(%r{CSS\*\: (\w+)}m)
-  bs_name = channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
+def extract_names_from_topic
+  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
+  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
+  bs_name = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
   cse_name = cse_name ? cse_name.captures : ["fakeid"]
   css_name = css_name ? css_name.captures : ["fakeid"]
   bs_name = bs_name ? bs_name.captures : ["fakeid"]
