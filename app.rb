@@ -5,8 +5,11 @@ require 'intercom'
 require 'dotenv/load'
 require 'httparty'
 
+def intercom_client
+  @intercom_client ||= Intercom::Client.new(token: ENV['TOKEN'])
+end
 
-$intercom = Intercom::Client.new(token: ENV['TOKEN'])
+# @intercom = Intercom::Client.new(token: ENV['TOKEN'])
 $zone = Time.now.getlocal.zone
 
 get '/' do
@@ -14,21 +17,28 @@ end
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
-  $channel_topic = "#{request_data['event']['text']}"
+  channel_topic = "#{request_data['event']['text']}"
+  extract_names_from_topic(channel_topic)
+  # pull a segment of on-call users from Intercom
+  # compare the segment against the data from the extracted names
+  # make a method to update the on-call data in Intercom based on the above
   status 200
 end
 
 
-
-def extract_names_from_topic
-  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
-  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
-  bs_name = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
+def extract_names_from_topic(channel_topic)
+  cse_name = channel_topic.match(%r{CSE\*\: (\w+)}m)
+  css_name = channel_topic.match(%r{CSS\*\: (\w+)}m)
+  bs_name = channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
   cse_name = cse_name ? cse_name.captures : ["fakeid"]
   css_name = css_name ? css_name.captures : ["fakeid"]
   bs_name = bs_name ? bs_name.captures : ["fakeid"]
   return cse_name + css_name + bs_name
 end
+
+# def find_users_in_intercom
+#   intercom_client.users.find()
+# end
 
 
 post '/' do
@@ -37,10 +47,12 @@ post '/' do
 end
 
 post '/live_canvas' do
+  # make method to pull the cuurently on-call folks
+  # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic
   content_type 'application/json'
 	$time = Time.now.strftime("%H:%M")
   $updated_at = "Updated at: *#{$time}* *#{$zone}*"
-  $all_convos = $intercom.counts.for_type(type: 'conversation').conversation["open"]
+  $all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
 	$response = "Current ongoing conversations: *#{$all_convos}*"
   
   if $all_convos == 0
@@ -52,7 +64,7 @@ post '/live_canvas' do
   	Response time might be a bit longer 😅"
   end
 
-  $text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{$updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{$cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{$css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{$bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
+  $text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{$response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{$updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"https://downloads.intercomcdn.com/i/o/151489045/937cbb74c47f73ac5afd0017/image.png\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{$css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{$bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
 
 
