@@ -6,7 +6,7 @@ require 'dotenv/load'
 require 'httparty'
 
 def intercom_client
-  @intercom_client ||= Intercom::Client.new(token: ENV['TOKEN'])
+  intercom_client ||= Intercom::Client.new(token: ENV['TOKEN'])
 end
 
 get '/' do
@@ -50,7 +50,7 @@ post '/live_canvas' do
   zone = Time.now.getlocal.zone
 	time = Time.now.strftime("%H:%M")
   updated_at = "Updated at: *#{time}* *#{zone}*"
-  all_convos = @intercom_client.counts.for_type(type: 'conversation').conversation["open"]
+  all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
 	@response = "Current ongoing conversations: *#{all_convos}*"
   
   if all_convos == 0
