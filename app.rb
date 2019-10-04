@@ -47,18 +47,18 @@ post '/live_canvas' do
   # make method to pull the cuurently on-call folks
   # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic
   content_type 'application/json'
-  zone = Time.now.getlocal.zone
-	time = Time.now.strftime("%H:%M")
-  updated_at = "Updated at: *#{time}* *#{zone}*"
-  all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
-	@response = "Current ongoing conversations: *#{all_convos}*"
+  $zone = Time.now.getlocal.zone
+	$time = Time.now.strftime("%H:%M")
+  $updated_at = "Updated at: *#{$time}* *#{$zone}*"
+  $all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
+	@response = "Current ongoing conversations: *#{$all_convos}*"
   
-  if all_convos == 0
+  if $all_convos == 0
   	@response = "Woot woot! On-call inbox is empty! 🥳"
   end
 
-  if all_convos >= 10
-  	@response = "Current ongoing conversations: *#{all_convos}*
+  if $all_convos >= 10
+  	@response = "Current ongoing conversations: *#{$all_convos}*
   	Response time might be a bit longer 😅"
   end
 
