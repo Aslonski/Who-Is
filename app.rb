@@ -19,7 +19,7 @@ post '/slack' do
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
   # compare the segment against the data from the extracted names 
   # make a method to update the on-call data in Intercom based on the above
-  # status 200
+  status 200
 end
 
 
