@@ -51,7 +51,7 @@ post '/live_canvas' do
   content_type 'application/json'
   zone = Time.now.getlocal.zone
 	time = Time.now.strftime("%H:%M")
-  updated_at = "Updated at: *#{$time}* *#{$zone}*"
+  updated_at = "Updated at: *#{time}* *#{zone}*"
   all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
 	my_response = "Current ongoing conversations: *#{all_convos}*"
   
