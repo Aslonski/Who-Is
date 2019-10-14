@@ -5,49 +5,7 @@ require 'intercom'
 require 'dotenv/load'
 require 'httparty'
 
-@on_call_images_hash = {
-  # APAC
-  "Amy":        "https://downloads.intercomcdn.com/i/o/152233512/c06c7ac8e899e829ccb89b43/image.png",
-  "Andie":      "https://downloads.intercomcdn.com/i/o/152235086/6395a05f52c17e218b844eb8/image.png",
-  "Anusha":     "https://downloads.intercomcdn.com/i/o/152235464/7a6016d3407e2e24ff7c87aa/image.png",
-  "Dorian":     "https://downloads.intercomcdn.com/i/o/152237342/f1ded691d993c2309411406f/image.png",
-  "Jon":        "https://downloads.intercomcdn.com/i/o/152239685/ef4b1cbe2a3465697b2d7d73/image.png",
-  "Jonno":      "https://downloads.intercomcdn.com/i/o/152241897/2905d44d611b0a7df95db1ac/image.png",
-  "Samuel":     "https://downloads.intercomcdn.com/i/o/152244151/e1e727e0fc137441de6517d9/image.png",
-  # EMEA
-  "Andy":       "https://downloads.intercomcdn.com/i/o/152244595/1eee6164dae6ed74b409098a/image.png",
-  "Aparna":     "https://downloads.intercomcdn.com/i/o/152247381/8c57d705a9d54eaea8f7f714/image.png",
-  "Ciara":      "https://downloads.intercomcdn.com/i/o/152248196/53f39c18c72d3050338853de/image.png",
-  "Colin":      "https://downloads.intercomcdn.com/i/o/152249146/ce7c622ba7d253ef68a7506b/image.png",
-  "Dan Logue":  "https://downloads.intercomcdn.com/i/o/152251221/50705ceb96378112ffe74858/image.png",
-  "Daniel C":   "https://downloads.intercomcdn.com/i/o/152252759/2d2408660cff77b2d01229fa/image.png",
-  "Donal":      "https://downloads.intercomcdn.com/i/o/152253111/6b8ef1bda577f7bd356f850d/image.png",
-  "Joseph":     "https://downloads.intercomcdn.com/i/o/152254766/62f191b00e4e4491918217c5/image.png",
-  "Kunal":      "https://downloads.intercomcdn.com/i/o/152255566/b0b508993afdfef82faca206/image.png",
-  "Laura Joy":  "https://downloads.intercomcdn.com/i/o/152255883/12709c5a1c65eff8dde8a187/image.png",
-  "Lizzie":     "https://downloads.intercomcdn.com/i/o/152256296/767edd06d611ddf63fcddced/image.png",
-  "Matt":       "https://downloads.intercomcdn.com/i/o/152256588/4ea5737d0f04fb9efa4f289f/image.png",
-  "Omar":       "https://downloads.intercomcdn.com/i/o/152256897/5cb1631f1ab91d5cca08876f/image.png",
-  "Sean M":     "https://downloads.intercomcdn.com/i/o/152257191/169becaed5b07fb6da2bb110/image.png",
-  "Shannen":    "https://downloads.intercomcdn.com/i/o/152257651/e766b41514b2be3c9c1add75/image.png",
-  "Sorin":      "https://downloads.intercomcdn.com/i/o/152257896/7870dfae38cf6e09ea65ab1a/image.png",
-  #NORAM
-  "Adam":       "https://downloads.intercomcdn.com/i/o/152258166/0e410ff5a8a4b6fefb2d0635/image.png",
-  "Amanda":     "https://downloads.intercomcdn.com/i/o/152258617/ffe3c53b651278d4f3cac51d/image.png",
-  "Andrew Kim": "https://downloads.intercomcdn.com/i/o/152258923/00ce50cbdcc99c538d07bcf9/image.png",
-  "Andrey":     "https://downloads.intercomcdn.com/i/o/152259309/1f160668f3715af492ef68be/image.png",
-  "Annie":      "https://downloads.intercomcdn.com/i/o/152259543/8fcf5cc56ae8e209797e3dfb/image.png",
-  "Delilah":    "https://downloads.intercomcdn.com/i/o/152259922/97312ab58a29d4ae50be18b4/image.png",
-  "Gabriel":    "https://downloads.intercomcdn.com/i/o/152260603/a7f04c2faa4399a6b031619d/image.png",
-  "Janelle":    "https://downloads.intercomcdn.com/i/o/152261412/9145aaa32d9e8d821d7058d9/image.png",
-  "Josh":       "https://downloads.intercomcdn.com/i/o/152261643/60d8ae93269c85cf6b739bfe/image.png",
-  "Kayvan":     "https://downloads.intercomcdn.com/i/o/152262054/bf23e11f6ff7e769e6937f0a/image.png",
-  "Russell":    "https://downloads.intercomcdn.com/i/o/151510541/354f58b68e344dd1ed02d30a/image.png",
-  "Samir":      "https://downloads.intercomcdn.com/i/o/152262426/dfabd7592faf5ec60491bed3/image.png",
-  "Sayam":      "https://downloads.intercomcdn.com/i/o/152262702/081fbf75c68c2309f1b5648e/image.png",
-  "Sean S":     "https://downloads.intercomcdn.com/i/o/152263104/352bf438b2824b895705e7c3/image.png",
-  "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png"
-}
+
 
 def intercom_client
   intercom_client ||= Intercom::Client.new(token: ENV['TOKEN'])
@@ -105,6 +63,50 @@ post '/live_canvas' do
   	my_response = "Current ongoing conversations: *#{all_convos}*
   	Response time might be a bit longer 😅"
   end
+
+  @on_call_images_hash = {
+    # APAC
+    "Amy":        "https://downloads.intercomcdn.com/i/o/152233512/c06c7ac8e899e829ccb89b43/image.png",
+    "Andie":      "https://downloads.intercomcdn.com/i/o/152235086/6395a05f52c17e218b844eb8/image.png",
+    "Anusha":     "https://downloads.intercomcdn.com/i/o/152235464/7a6016d3407e2e24ff7c87aa/image.png",
+    "Dorian":     "https://downloads.intercomcdn.com/i/o/152237342/f1ded691d993c2309411406f/image.png",
+    "Jon":        "https://downloads.intercomcdn.com/i/o/152239685/ef4b1cbe2a3465697b2d7d73/image.png",
+    "Jonno":      "https://downloads.intercomcdn.com/i/o/152241897/2905d44d611b0a7df95db1ac/image.png",
+    "Samuel":     "https://downloads.intercomcdn.com/i/o/152244151/e1e727e0fc137441de6517d9/image.png",
+    # EMEA
+    "Andy":       "https://downloads.intercomcdn.com/i/o/152244595/1eee6164dae6ed74b409098a/image.png",
+    "Aparna":     "https://downloads.intercomcdn.com/i/o/152247381/8c57d705a9d54eaea8f7f714/image.png",
+    "Ciara":      "https://downloads.intercomcdn.com/i/o/152248196/53f39c18c72d3050338853de/image.png",
+    "Colin":      "https://downloads.intercomcdn.com/i/o/152249146/ce7c622ba7d253ef68a7506b/image.png",
+    "Dan Logue":  "https://downloads.intercomcdn.com/i/o/152251221/50705ceb96378112ffe74858/image.png",
+    "Daniel C":   "https://downloads.intercomcdn.com/i/o/152252759/2d2408660cff77b2d01229fa/image.png",
+    "Donal":      "https://downloads.intercomcdn.com/i/o/152253111/6b8ef1bda577f7bd356f850d/image.png",
+    "Joseph":     "https://downloads.intercomcdn.com/i/o/152254766/62f191b00e4e4491918217c5/image.png",
+    "Kunal":      "https://downloads.intercomcdn.com/i/o/152255566/b0b508993afdfef82faca206/image.png",
+    "Laura Joy":  "https://downloads.intercomcdn.com/i/o/152255883/12709c5a1c65eff8dde8a187/image.png",
+    "Lizzie":     "https://downloads.intercomcdn.com/i/o/152256296/767edd06d611ddf63fcddced/image.png",
+    "Matt":       "https://downloads.intercomcdn.com/i/o/152256588/4ea5737d0f04fb9efa4f289f/image.png",
+    "Omar":       "https://downloads.intercomcdn.com/i/o/152256897/5cb1631f1ab91d5cca08876f/image.png",
+    "Sean M":     "https://downloads.intercomcdn.com/i/o/152257191/169becaed5b07fb6da2bb110/image.png",
+    "Shannen":    "https://downloads.intercomcdn.com/i/o/152257651/e766b41514b2be3c9c1add75/image.png",
+    "Sorin":      "https://downloads.intercomcdn.com/i/o/152257896/7870dfae38cf6e09ea65ab1a/image.png",
+    #NORAM
+    "Adam":       "https://downloads.intercomcdn.com/i/o/152258166/0e410ff5a8a4b6fefb2d0635/image.png",
+    "Amanda":     "https://downloads.intercomcdn.com/i/o/152258617/ffe3c53b651278d4f3cac51d/image.png",
+    "Andrew Kim": "https://downloads.intercomcdn.com/i/o/152258923/00ce50cbdcc99c538d07bcf9/image.png",
+    "Andrey":     "https://downloads.intercomcdn.com/i/o/152259309/1f160668f3715af492ef68be/image.png",
+    "Annie":      "https://downloads.intercomcdn.com/i/o/152259543/8fcf5cc56ae8e209797e3dfb/image.png",
+    "Delilah":    "https://downloads.intercomcdn.com/i/o/152259922/97312ab58a29d4ae50be18b4/image.png",
+    "Gabriel":    "https://downloads.intercomcdn.com/i/o/152260603/a7f04c2faa4399a6b031619d/image.png",
+    "Janelle":    "https://downloads.intercomcdn.com/i/o/152261412/9145aaa32d9e8d821d7058d9/image.png",
+    "Josh":       "https://downloads.intercomcdn.com/i/o/152261643/60d8ae93269c85cf6b739bfe/image.png",
+    "Kayvan":     "https://downloads.intercomcdn.com/i/o/152262054/bf23e11f6ff7e769e6937f0a/image.png",
+    "Russell":    "https://downloads.intercomcdn.com/i/o/151510541/354f58b68e344dd1ed02d30a/image.png",
+    "Samir":      "https://downloads.intercomcdn.com/i/o/152262426/dfabd7592faf5ec60491bed3/image.png",
+    "Sayam":      "https://downloads.intercomcdn.com/i/o/152262702/081fbf75c68c2309f1b5648e/image.png",
+    "Sean S":     "https://downloads.intercomcdn.com/i/o/152263104/352bf438b2824b895705e7c3/image.png",
+    "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png"
+  }
 
   text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{@on_call_images_hash[extract_names_from_topic[0].to_sym]}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"https://downloads.intercomcdn.com/i/o/151510418/97fe62cd4259e799d9819bbc/image.png\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"https://downloads.intercomcdn.com/i/o/151510541/354f58b68e344dd1ed02d30a/image.png\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
