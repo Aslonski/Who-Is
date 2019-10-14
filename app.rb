@@ -64,7 +64,7 @@ post '/live_canvas' do
   	Response time might be a bit longer 😅"
   end
 
-  @on_call_images_hash = {
+  on_call_images_hash = {
     # APAC
     "Amy":        "https://downloads.intercomcdn.com/i/o/152233512/c06c7ac8e899e829ccb89b43/image.png",
     "Andie":      "https://downloads.intercomcdn.com/i/o/152235086/6395a05f52c17e218b844eb8/image.png",
@@ -108,9 +108,11 @@ post '/live_canvas' do
     "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png"
   }
 
-  cse_img = @on_call_images_hash[extract_names_from_topic[0].to_sym] || "https://downloads.intercomcdn.com/i/o/155643866/4c671e1a9fae7d4f7aadf4d7/travolta.gif"
+  cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
+  css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
+  bs_img = on_call_images_hash[extract_names_from_topic[2].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
 
-  text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{@on_call_images_hash[extract_names_from_topic[1].to_sym]}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{@on_call_images_hash[extract_names_from_topic[2].to_sym]}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
+  text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
 
 
