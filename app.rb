@@ -5,8 +5,6 @@ require 'intercom'
 require 'dotenv/load'
 require 'httparty'
 
-
-
 def intercom_client
   intercom_client ||= Intercom::Client.new(token: ENV['TOKEN'])
 end
@@ -134,9 +132,25 @@ private def update_oncall_people_status
   # slack_post array of new oncall_people needs to be set to "true" 
 end
 
-private def find_a_person_in_intercom_by_name_only()
+private def find_a_person_in_intercom_by_name_only
+  people_on_call = HTTParty.post("https://api.intercom.io/customers/search", 
+   headers: { "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
+        },
 
+   query: {
+      "query": {
+      "field": "name",
+      "operator": "~",
+      "value": "Andrey"
+    }
+  })
+
+  people_on_call
 end
+
+p find_a_person_in_intercom_by_name_only
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
