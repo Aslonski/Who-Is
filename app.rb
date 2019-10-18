@@ -138,7 +138,7 @@ post '/live_canvas' do
   	Response time might be a bit longer 😅"
   end
 
-  cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || on_call_images_hash["travolta"]
+  cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || on_call_images_hash["travolta".to_sym]
   css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || on_call_images_hash["travolta"]  
   bs_img = on_call_images_hash[extract_names_from_topic[2].to_sym] || on_call_images_hash["travolta"]
 
