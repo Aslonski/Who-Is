@@ -100,9 +100,6 @@ private def on_call_images_hash
 end
 
 private def get_conversation_count
-  zone = Time.now.getlocal.zone
-  time = Time.now.strftime("%H:%M")
-  updated_at = "Updated at: *#{time}* *#{zone}*"
   all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
   my_response = "Current ongoing conversations: *#{all_convos}*"
   
@@ -115,6 +112,17 @@ private def get_conversation_count
     Response time might be a bit longer 😅"
   end
 end
+
+private def updated_at
+  @updated_at ||= get_updated_at
+end
+
+private def get_updated_at
+  zone = Time.now.getlocal.zone
+  time = Time.now.strftime("%H:%M")
+  "Updated at: *#{time}* *#{zone}*"
+end
+
 
 # Lay out (method by method) what we need to update when Slack topic gets updated
 private def find_a_person_in_intercom_by_name_only()
