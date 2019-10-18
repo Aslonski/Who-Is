@@ -22,10 +22,9 @@ post '/slack' do
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
   # compare the segment against the data from the extracted names 
   # make a method to update the on-call data in Intercom based on the above
+  # Need to do this because I can't use global variables in the internal integrations repo.
 # # –––––––––
-# I feel like the above is an extra step that is not needed, and wil slow the app down.
-# I already have the name of the on-call person that I get ffrom the Slack topic. I don't see why I need to look that name up in the on-call workspace( which is very hard to do since I only have a name, and you can't look up by names, so might need to check against each memebr in the segment by somehow comparing the names which is a good chcunk of code, and honestly I don't see the WHY behind it.)
-
+# 
 
 end
 
@@ -52,26 +51,9 @@ post '/' do
 	text
 end
 
-post '/live_canvas' do
-  # make method to pull the cuurently on-call folks
-  # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic
-  content_type 'application/json'
-  zone = Time.now.getlocal.zone
-	time = Time.now.strftime("%H:%M")
-  updated_at = "Updated at: *#{time}* *#{zone}*"
-  all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
-	my_response = "Current ongoing conversations: *#{all_convos}*"
-  
-  if all_convos == 0
-  	my_response = "Woot woot! On-call inbox is empty! 🥳"
-  end
-
-  if all_convos >= 10
-  	my_response = "Current ongoing conversations: *#{all_convos}*
-  	Response time might be a bit longer 😅"
-  end
-
-  on_call_images_hash = {
+# Lay out necessary attribute/variable setups in method-by-method style!
+private def on_call_images_hash
+  @on_call_images_hash ||= {
     # APAC
     "Amy":        "https://downloads.intercomcdn.com/i/o/152233512/c06c7ac8e899e829ccb89b43/image.png",
     "Andie":      "https://downloads.intercomcdn.com/i/o/152235086/6395a05f52c17e218b844eb8/image.png",
@@ -114,6 +96,46 @@ post '/live_canvas' do
     "SeanS":      "https://downloads.intercomcdn.com/i/o/152263104/352bf438b2824b895705e7c3/image.png",
     "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png"
   }
+end
+
+# Lay out (method by method) what we need to update when Slack topic gets updated
+private def find_a_person_in_intercom_by_name_only()
+
+end
+
+private def update_an_oncall_person_in_intercom()
+
+end
+
+# Lay out (method by method) what we need to build and send back when a messenger opens.
+private def get_oncall_people_from_intercom()
+
+end
+
+private def build_oncall_app_response_canvas()
+
+end
+
+
+
+post '/live_canvas' do
+  # make method to pull the cuurently on-call folks
+  # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic becaue I can't use global variables. Unstable API version allows me to search by name, and by on-call role attribute directly.
+  content_type 'application/json'
+  zone = Time.now.getlocal.zone
+	time = Time.now.strftime("%H:%M")
+  updated_at = "Updated at: *#{time}* *#{zone}*"
+  all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
+	my_response = "Current ongoing conversations: *#{all_convos}*"
+  
+  if all_convos == 0
+  	my_response = "Woot woot! On-call inbox is empty! 🥳"
+  end
+
+  if all_convos >= 10
+  	my_response = "Current ongoing conversations: *#{all_convos}*
+  	Response time might be a bit longer 😅"
+  end
 
   cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
   css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
