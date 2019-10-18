@@ -22,6 +22,11 @@ post '/slack' do
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
   # compare the segment against the data from the extracted names 
   # make a method to update the on-call data in Intercom based on the above
+# # –––––––––
+# I feel like the above is an extra step that is not needed, and wil slow the app down.
+# I already have the name of the on-call person that I get ffrom the Slack topic. I don't see why I need to look that name up in the on-call workspace( which is very hard to do since I only have a name, and you can't look up by names, so might need to check against each memebr in the segment by somehow comparing the names which is a good chcunk of code, and honestly I don't see the WHY behind it.)
+
+
 end
 
 
@@ -35,11 +40,13 @@ def extract_names_from_topic
   return cse_name + css_name + bs_name
 end
 
-# def find_users_in_intercom
-#   intercom_client.users.find()
-# end
+# -----------
+def find_users_in_intercom
+  all_users = intercom_client.users.find_all(segment_id: "5d92336e9925897dd683c683")
 
+end
 
+# -----------
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
 	text
@@ -78,22 +85,22 @@ post '/live_canvas' do
     "Aparna":     "https://downloads.intercomcdn.com/i/o/152247381/8c57d705a9d54eaea8f7f714/image.png",
     "Ciara":      "https://downloads.intercomcdn.com/i/o/152248196/53f39c18c72d3050338853de/image.png",
     "Colin":      "https://downloads.intercomcdn.com/i/o/152249146/ce7c622ba7d253ef68a7506b/image.png",
-    "Dan":  "https://downloads.intercomcdn.com/i/o/152251221/50705ceb96378112ffe74858/image.png",
-    "Daniel":   "https://downloads.intercomcdn.com/i/o/152252759/2d2408660cff77b2d01229fa/image.png",
+    "Dan":        "https://downloads.intercomcdn.com/i/o/152251221/50705ceb96378112ffe74858/image.png",
+    "Daniel":     "https://downloads.intercomcdn.com/i/o/152252759/2d2408660cff77b2d01229fa/image.png",
     "Donal":      "https://downloads.intercomcdn.com/i/o/152253111/6b8ef1bda577f7bd356f850d/image.png",
     "Joseph":     "https://downloads.intercomcdn.com/i/o/152254766/62f191b00e4e4491918217c5/image.png",
     "Kunal":      "https://downloads.intercomcdn.com/i/o/152255566/b0b508993afdfef82faca206/image.png",
-    "Laura Joy":  "https://downloads.intercomcdn.com/i/o/152255883/12709c5a1c65eff8dde8a187/image.png",
+    "Laura":      "https://downloads.intercomcdn.com/i/o/152255883/12709c5a1c65eff8dde8a187/image.png",
     "Lizzie":     "https://downloads.intercomcdn.com/i/o/152256296/767edd06d611ddf63fcddced/image.png",
     "Matt":       "https://downloads.intercomcdn.com/i/o/152256588/4ea5737d0f04fb9efa4f289f/image.png",
     "Omar":       "https://downloads.intercomcdn.com/i/o/152256897/5cb1631f1ab91d5cca08876f/image.png",
-    "SeanM":     "https://downloads.intercomcdn.com/i/o/152257191/169becaed5b07fb6da2bb110/image.png",
+    "SeanM":      "https://downloads.intercomcdn.com/i/o/152257191/169becaed5b07fb6da2bb110/image.png",
     "Shannen":    "https://downloads.intercomcdn.com/i/o/152257651/e766b41514b2be3c9c1add75/image.png",
     "Sorin":      "https://downloads.intercomcdn.com/i/o/152257896/7870dfae38cf6e09ea65ab1a/image.png",
     #NORAM
     "Adam":       "https://downloads.intercomcdn.com/i/o/152258166/0e410ff5a8a4b6fefb2d0635/image.png",
     "Amanda":     "https://downloads.intercomcdn.com/i/o/152258617/ffe3c53b651278d4f3cac51d/image.png",
-    "Andrew": "https://downloads.intercomcdn.com/i/o/152258923/00ce50cbdcc99c538d07bcf9/image.png",
+    "Andrew":     "https://downloads.intercomcdn.com/i/o/152258923/00ce50cbdcc99c538d07bcf9/image.png",
     "Andrey":     "https://downloads.intercomcdn.com/i/o/152259309/1f160668f3715af492ef68be/image.png",
     "Annie":      "https://downloads.intercomcdn.com/i/o/152259543/8fcf5cc56ae8e209797e3dfb/image.png",
     "Delilah":    "https://downloads.intercomcdn.com/i/o/152259922/97312ab58a29d4ae50be18b4/image.png",
@@ -104,7 +111,7 @@ post '/live_canvas' do
     "Russell":    "https://downloads.intercomcdn.com/i/o/151510541/354f58b68e344dd1ed02d30a/image.png",
     "Samir":      "https://downloads.intercomcdn.com/i/o/152262426/dfabd7592faf5ec60491bed3/image.png",
     "Sayam":      "https://downloads.intercomcdn.com/i/o/152262702/081fbf75c68c2309f1b5648e/image.png",
-    "SeanS":     "https://downloads.intercomcdn.com/i/o/152263104/352bf438b2824b895705e7c3/image.png",
+    "SeanS":      "https://downloads.intercomcdn.com/i/o/152263104/352bf438b2824b895705e7c3/image.png",
     "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png"
   }
 
@@ -114,6 +121,7 @@ post '/live_canvas' do
 
   text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
+
 
 
 
