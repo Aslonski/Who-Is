@@ -125,8 +125,21 @@ end
 
 
 # Lay out (method by method) what we need to update when Slack topic gets updated
+private def update_oncall_people_status
+  # received a post from Slack topic change
+  # Compare that post from slack with the currently oncall people
+  current = get_currently_on_call_people
+  # loop through and compare "current" with "slack_post" to find out who changed
+  # resulting_different_array of people to set "false" needs to be processed
+  # slack_post array of new oncall_people needs to be set to "true" 
+end
+
 private def find_a_person_in_intercom_by_name_only()
 
+end
+
+private def get_currently_on_call_people
+  # returns an array of people that have is_currently_on_call: true
 end
 
 private def update_an_oncall_person_in_intercom()
