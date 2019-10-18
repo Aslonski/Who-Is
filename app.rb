@@ -94,7 +94,8 @@ private def on_call_images_hash
     "Samir":      "https://downloads.intercomcdn.com/i/o/152262426/dfabd7592faf5ec60491bed3/image.png",
     "Sayam":      "https://downloads.intercomcdn.com/i/o/152262702/081fbf75c68c2309f1b5648e/image.png",
     "SeanS":      "https://downloads.intercomcdn.com/i/o/152263104/352bf438b2824b895705e7c3/image.png",
-    "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png"
+    "Tove":       "https://downloads.intercomcdn.com/i/o/152263374/cc0c7d56d51c3b95c3575a42/image.png",
+    "travolta": "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
   }
 end
 
@@ -137,9 +138,9 @@ post '/live_canvas' do
   	Response time might be a bit longer 😅"
   end
 
-  cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
-  css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
-  bs_img = on_call_images_hash[extract_names_from_topic[2].to_sym] || "https://downloads.intercomcdn.com/i/o/155646832/cf835e0b5c86d3c6d0e7fb43/giphy.gif"
+  cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || on_call_images_hash["travolta"]
+  css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || on_call_images_hash["travolta"]  
+  bs_img = on_call_images_hash[extract_names_from_topic[2].to_sym] || on_call_images_hash["travolta"]
 
   text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
