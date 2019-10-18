@@ -99,6 +99,23 @@ private def on_call_images_hash
   }
 end
 
+private def get_conversation_count
+  zone = Time.now.getlocal.zone
+  time = Time.now.strftime("%H:%M")
+  updated_at = "Updated at: *#{time}* *#{zone}*"
+  all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
+  my_response = "Current ongoing conversations: *#{all_convos}*"
+  
+  if all_convos == 0
+    my_response = "Woot woot! On-call inbox is empty! 🥳"
+  end
+
+  if all_convos >= 10
+    my_response = "Current ongoing conversations: *#{all_convos}*
+    Response time might be a bit longer 😅"
+  end
+end
+
 # Lay out (method by method) what we need to update when Slack topic gets updated
 private def find_a_person_in_intercom_by_name_only()
 
@@ -120,27 +137,15 @@ end
 
 
 post '/live_canvas' do
+  content_type 'application/json'
+  my_response = get_conversation_count
   # make method to pull the cuurently on-call folks
   # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic becaue I can't use global variables. Unstable API version allows me to search by name, and by on-call role attribute directly.
-  content_type 'application/json'
-  zone = Time.now.getlocal.zone
-	time = Time.now.strftime("%H:%M")
-  updated_at = "Updated at: *#{time}* *#{zone}*"
-  all_convos = intercom_client.counts.for_type(type: 'conversation').conversation["open"]
-	my_response = "Current ongoing conversations: *#{all_convos}*"
-  
-  if all_convos == 0
-  	my_response = "Woot woot! On-call inbox is empty! 🥳"
-  end
-
-  if all_convos >= 10
-  	my_response = "Current ongoing conversations: *#{all_convos}*
-  	Response time might be a bit longer 😅"
-  end
+ 
 
   cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || on_call_images_hash["travolta".to_sym]
-  css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || on_call_images_hash["travolta"]  
-  bs_img = on_call_images_hash[extract_names_from_topic[2].to_sym] || on_call_images_hash["travolta"]
+  css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || on_call_images_hash["travolta".to_sym]  
+  bs_img = on_call_images_hash[extract_names_from_topic[2].to_sym] || on_call_images_hash["travolta".to_sym]
 
   text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
