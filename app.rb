@@ -150,7 +150,7 @@ private def find_a_person_in_intercom_by_name_only
   people_on_call
 end
 
-p find_a_person_in_intercom_by_name_only
+p find_a_person_in_intercom_by_name_only.id
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
