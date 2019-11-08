@@ -36,7 +36,7 @@ def extract_names_from_topic
   bs_name = bs_name ? bs_name.captures : ["No Billing Specialist on call at the moment"]
   return cse_name + css_name + bs_name
 end
-
+p extract_names_from_topic
 
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
