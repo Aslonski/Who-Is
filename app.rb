@@ -132,25 +132,43 @@ private def update_oncall_people_status
   # slack_post array of new oncall_people needs to be set to "true" 
 end
 
-private def find_a_person_in_intercom_by_name_only
-  people_on_call = HTTParty.post("https://api.intercom.io/customers/search", 
+
+private def query_name_inserter(name)
+  {
+    field: "name",
+    operator: "~",
+    value: name
+  }
+end
+
+private def find_people_in_intercom(names)
+cse = HTTParty.post("https://api.intercom.io/customers/search", 
    headers: { "Content-Type": "application/json",
               "Accept": "application/json",
               "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
-        },
-
+            },
    query: {
       "query": {
-      "field": "name",
-      "operator": "~",
-      "value": "Andrey"
-    }
-  })
-
-  people_on_call
+        "operator": "AND",
+        "value": [
+          { 
+            "operator": "OR",
+            "value": names.map{|name| query_name_inserter(name)}
+          },
+          "operator": "AND",
+          "value": [
+            {
+              "field": "segment_id",
+              "operator": "=",
+              "value": "5d92336e9925897dd683c683"
+            }
+          ]
+        ]
+      },
+   }
+  )
+  cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
 end
-
-p find_a_person_in_intercom_by_name_only
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
@@ -184,7 +202,6 @@ post '/live_canvas' do
 
   text = "{\"content\":{\"components\":[{\"id\":\"ab1c31592d\",\"type\":\"text\",\"text\":\"#{my_response}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"id\":\"ab1c31\",\"type\":\"text\",\"text\":\"#{updated_at}\",\"style\":\"header\",\"align\":\"left\",\"bottom_margin\":false},{\"type\":\"divider\"},{\"type\":\"list\",\"disabled\":false,\"items\":[{\"type\":\"item\",\"id\":\"on-call-list\",\"title\":\"CSE on call:\",\"subtitle\":\"#{extract_names_from_topic[0]}\",\"image\":\"#{cse_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list2\",\"title\":\"CSS on call:\",\"subtitle\":\"#{extract_names_from_topic[1]}\",\"image\":\"#{css_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true},{\"type\":\"item\",\"id\":\"on-call-list3\",\"title\":\"BS on call:\",\"subtitle\":\"#{extract_names_from_topic[2]}\",\"image\":\"#{bs_img}\",\"image_width\":48,\"image_height\":48,\"rounded_image\":true}]}]}}"
 end
-
 
 
 
