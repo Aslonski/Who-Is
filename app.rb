@@ -37,13 +37,7 @@ def extract_names_from_topic
   return cse_name + css_name + bs_name
 end
 
-# -----------
-def find_users_in_intercom
-  all_users = intercom_client.users.find_all(segment_id: "5d92336e9925897dd683c683")
 
-end
-
-# -----------
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
 	text
@@ -169,6 +163,7 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
   )
   cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
 end
+p find_people_in_intercom(extract_names_from_topic)
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
