@@ -35,10 +35,10 @@ def extract_names_from_topic
   cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
   css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
   bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
-  $on_call_names = cse_name + css_name + bs_name
-  $on_call_names
+  on_call_names = cse_name + css_name + bs_name
+  return on_call_names
 end
-p $on_call_names
+p on_call_names
 
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
