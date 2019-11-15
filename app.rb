@@ -24,8 +24,8 @@ post '/slack' do
 # # –––––––––
 # 
 
-end
 p $channel_topic
+end
 
 
 def extract_names_from_topic
