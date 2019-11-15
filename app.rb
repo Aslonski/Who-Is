@@ -28,9 +28,10 @@ end
 
 
 def extract_names_from_topic
-  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
-  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
-  bs_name  = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
+  p $channel_topic
+  cse_name = $channel_topic&.match(%r{CSE\*\: (\w+)}m)
+  css_name = $channel_topic&.match(%r{CSS\*\: (\w+)}m)
+  bs_name  = $channel_topic&.match(%r{Billing Specialist\*\: (\w+)}m)
   cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
   css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
   bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
