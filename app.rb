@@ -28,8 +28,6 @@ end
 
 
 def extract_names_from_topic
-  p "––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––"
-  p $channel_topic
   cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
   css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
   bs_name  = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
@@ -189,7 +187,7 @@ post '/live_canvas' do
   my_response = get_conversation_count
   # make method to pull the cuurently on-call folks
   # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic becaue I can't use global variables. Unstable API version allows me to search by name, and by on-call role attribute directly.
-p find_people_in_intercom(extract_names_from_topic)
+ find_people_in_intercom(extract_names_from_topic)
 
 
   cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || on_call_images_hash["travolta".to_sym]
