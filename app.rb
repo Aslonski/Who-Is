@@ -29,6 +29,7 @@ end
 
 def extract_names_from_topic
   p $channel_topic
+  binding.pry
   cse_name = $channel_topic&.match(%r{CSE\*\: (\w+)}m)
   css_name = $channel_topic&.match(%r{CSS\*\: (\w+)}m)
   bs_name  = $channel_topic&.match(%r{Billing Specialist\*\: (\w+)}m)
