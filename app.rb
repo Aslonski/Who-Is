@@ -26,7 +26,8 @@ post '/slack' do
 end
 
 def set_on_call_people_in_intercom
-
+  hash_of_names = find_people_in_intercom(extract_names_from_topic)
+  p hash_of_names
 end
 
 
@@ -165,7 +166,7 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
   )
   names_hash = {}
   cse.parsed_response["customers"].each{ |user|  names_hash[user["name"]] = user["id"] }
-  p names_hash
+  names_hash
 
 end
 
