@@ -9,8 +9,8 @@ def intercom_client
   intercom_client ||= Intercom::Client.new(token: ENV['ANDREYS-APP-TOKEN'])
 end
 
-get '/' do
-end
+# get '/' do
+# end
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
@@ -28,6 +28,7 @@ end
 
 
 def extract_names_from_topic
+  p "––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––"
   p $channel_topic
   cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
   css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
