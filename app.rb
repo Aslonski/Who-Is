@@ -135,7 +135,7 @@ private def query_name_inserter(name)
   }
 end
 
-private def find_people_in_intercom(names)
+def find_people_in_intercom(names)
 cse = HTTParty.post("https://api.intercom.io/customers/search", 
    headers: { "Content-Type": "application/json",
               "Accept": "application/json",
@@ -163,7 +163,7 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
   )
   cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
 end
-# p find_people_in_intercom(extract_names_from_topic)
+p find_people_in_intercom(extract_names_from_topic)
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
