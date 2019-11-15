@@ -29,9 +29,9 @@ end
 
 def extract_names_from_topic
   p $channel_topic
-  cse_name = $channel_topic&.match(%r{CSE\*\: (\w+)}m)
-  css_name = $channel_topic&.match(%r{CSS\*\: (\w+)}m)
-  bs_name  = $channel_topic&.match(%r{Billing Specialist\*\: (\w+)}m)
+  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
+  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
+  bs_name  = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
   cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
   css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
   bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
@@ -163,7 +163,7 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
   )
   cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
 end
-p find_people_in_intercom(extract_names_from_topic[0..2])
+p find_people_in_intercom(extract_names_from_topic)
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
