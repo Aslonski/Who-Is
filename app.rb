@@ -38,7 +38,7 @@ def extract_names_from_topic
   on_call_names = cse_name + css_name + bs_name
   return on_call_names
 end
-p on_call_names
+p extract_names_from_topic
 
 post '/' do
 	text = "{\"canvas\":{\"content_url\":\"https://evening-fortress-32801.herokuapp.com/live_canvas\"}}"
