@@ -24,7 +24,7 @@ post '/slack' do
 # # –––––––––
 # 
 
-p $channel_topic
+ # $channel_topic
 end
 
 
@@ -35,7 +35,8 @@ def extract_names_from_topic
   cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
   css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
   bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
-  cse_name + css_name + bs_name
+  $on_call_names = cse_name + css_name + bs_name
+  $on_call_names
 end
 # p extract_names_from_topic
 
@@ -164,7 +165,7 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
   )
   cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
 end
-# p find_people_in_intercom(extract_names_from_topic)
+p find_people_in_intercom($on_call_names)
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
