@@ -164,7 +164,6 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
   )
   cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
 end
-p find_people_in_intercom(extract_names_from_topic)
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
@@ -190,7 +189,8 @@ post '/live_canvas' do
   my_response = get_conversation_count
   # make method to pull the cuurently on-call folks
   # change the logic the canvas/card uses to update the info based on aboved NOT based on slack topic becaue I can't use global variables. Unstable API version allows me to search by name, and by on-call role attribute directly.
- 
+p find_people_in_intercom(extract_names_from_topic)
+
 
   cse_img = on_call_images_hash[extract_names_from_topic[0].to_sym] || on_call_images_hash["travolta".to_sym]
   css_img = on_call_images_hash[extract_names_from_topic[1].to_sym] || on_call_images_hash["travolta".to_sym]  
