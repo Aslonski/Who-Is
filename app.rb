@@ -9,12 +9,11 @@ def intercom_client
   intercom_client ||= Intercom::Client.new(token: ENV['ANDREYS-APP-TOKEN'])
 end
 
-# get '/' do
-# end
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   $channel_topic = "#{request_data['event']['text']}"
+  set_on_call_people_in_intercom
   status 200
   # extract_names_from_topic(channel_topic)
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
@@ -23,6 +22,10 @@ post '/slack' do
   # Need to do this because I can't use global variables in the internal integrations repo.
 # # –––––––––
 # 
+
+end
+
+def set_on_call_people_in_intercom
 
 end
 
@@ -160,7 +163,10 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
       },
    }
   )
-  cse.parsed_response["customers"].each{ |user| p "#{user["name"]} – #{user["id"]}" }
+  names_hash = {}
+  cse.parsed_response["customers"].each{ |user|  names_hash['#{user["name"]}'] = user["id"] }
+  names_hash
+}
 end
 
 private def get_currently_on_call_people
