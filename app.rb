@@ -24,7 +24,7 @@ post '/slack' do
 # # –––––––––
 # 
 
- # $channel_topic
+ return $channel_topic
 end
 
 
