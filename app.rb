@@ -13,6 +13,7 @@ end
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   channel_topic = "#{request_data['event']['text']}"
+  p channel_topic
   set_on_call_people_in_intercom(channel_topic)
   status 200
   # extract_names_from_topic(channel_topic)
