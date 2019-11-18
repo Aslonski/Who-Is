@@ -4,7 +4,6 @@ require 'net/http'
 require 'intercom'
 require 'dotenv/load'
 require 'httparty'
-enable :sessions
 
 def intercom_client
   intercom_client ||= Intercom::Client.new(token: ENV['ANDREYS-APP-TOKEN'])
@@ -13,7 +12,7 @@ end
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
-  session[:channel_topic] = "#{request_data['event']['text']}"
+  $channel_topic = "#{request_data['event']['text']}"
   set_on_call_people_in_intercom
   status 200
   # extract_names_from_topic(channel_topic)
@@ -33,9 +32,9 @@ end
 
 
 def extract_names_from_topic
-  cse_name = session[:channel_topic].match(%r{CSE\*\: (\w+)}m)
-  css_name = session[:channel_topic].match(%r{CSS\*\: (\w+)}m)
-  bs_name  = session[:channel_topic].match(%r{Billing Specialist\*\: (\w+)}m)
+  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
+  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
+  bs_name  = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
   cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
   css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
   bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
