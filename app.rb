@@ -12,8 +12,9 @@ end
 
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
-  $channel_topic = "#{request_data['event']['text']}"
-  set_on_call_people_in_intercom
+  channel_topic = "#{request_data['event']['text']}"
+  set_on_call_people_in_intercom(channel_topic)
+
   status 200
   # extract_names_from_topic(channel_topic)
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
@@ -25,16 +26,16 @@ post '/slack' do
 
 end
 
-def set_on_call_people_in_intercom
-  hash_of_names = find_people_in_intercom(extract_names_from_topic)
+def set_on_call_people_in_intercom(people)
+  hash_of_names = find_people_in_intercom(extract_names_from_topic(people))
   p hash_of_names
 end
 
 
-def extract_names_from_topic
-  cse_name = $channel_topic.match(%r{CSE\*\: (\w+)}m)
-  css_name = $channel_topic.match(%r{CSS\*\: (\w+)}m)
-  bs_name  = $channel_topic.match(%r{Billing Specialist\*\: (\w+)}m)
+def extract_names_from_topic(topic)
+  cse_name = topic.match(%r{CSE\*\: (\w+)}m)
+  css_name = topic.match(%r{CSS\*\: (\w+)}m)
+  bs_name  = topic.match(%r{Billing Specialist\*\: (\w+)}m)
   cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
   css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
   bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
