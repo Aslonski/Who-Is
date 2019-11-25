@@ -31,7 +31,6 @@ def set_on_call_people_in_intercom(people)
   intercom_client.users.create(id: hash_of_names[@cse_name[0]], custom_attributes:{"on_call_currently": true})
   intercom_client.users.create(id: hash_of_names[@css_name[0]], custom_attributes:{"on_call_currently": true})
   intercom_client.users.create(id: hash_of_names[@bs_name[0]], custom_attributes:{"on_call_currently": true})
-sleep(1)
    get_currently_on_call_people
 end
 
