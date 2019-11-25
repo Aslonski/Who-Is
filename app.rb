@@ -28,18 +28,18 @@ end
 
 def set_on_call_people_in_intercom(people)
   hash_of_names = find_people_in_intercom(extract_names_from_topic(people))
-  p hash_of_names
+  p hash_of_names[@cse_name]
 end
 
 
 def extract_names_from_topic(topic)
-  cse_name = topic.match(%r{CSE\*\: (\w+)}m)
-  css_name = topic.match(%r{CSS\*\: (\w+)}m)
-  bs_name  = topic.match(%r{Billing Specialist\*\: (\w+)}m)
-  cse_name = cse_name ? cse_name.captures : ["No CSE on call at the moment"]
-  css_name = css_name ? css_name.captures : ["No CSS on call at the moment"]
-  bs_name  = bs_name  ? bs_name.captures  : ["No Billing Specialist on call at the moment"]
-  return cse_name + css_name + bs_name
+  @cse_name = topic.match(%r{CSE\*\: (\w+)}m)
+  @css_name = topic.match(%r{CSS\*\: (\w+)}m)
+  @bs_name  = topic.match(%r{Billing Specialist\*\: (\w+)}m)
+  @cse_name = @cse_name ? @cse_name.captures : ["No CSE on call at the moment"]
+  @css_name = @css_name ? @css_name.captures : ["No CSS on call at the moment"]
+  @bs_name  = @bs_name  ? @bs_name.captures  : ["No Billing Specialist on call at the moment"]
+  return @cse_name + @css_name + @bs_name
 end
 
 post '/' do
@@ -165,9 +165,9 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
       },
    }
   )
-  names_hash = {}
-  cse.parsed_response["customers"].each{ |user|  names_hash[user["name"]] = user["id"] }
-  names_hash
+  @names_hash = {}
+  cse.parsed_response["customers"].each{ |user|  @names_hash[user["name"]] = user["id"] }
+  return @names_hash
 
 end
 
