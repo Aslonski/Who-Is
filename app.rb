@@ -6,7 +6,7 @@ require 'dotenv/load'
 require 'httparty'
 
 def intercom_client
-  intercom_client ||= Intercom::Client.new(token: ENV['ANDREYS-APP-TOKEN'])
+  intercom_client ||= Intercom::Client.new(token: ENV['UNSTABLE-TOKEN'])
 end
 
 
