@@ -178,18 +178,19 @@ end
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
   currently_on_call = HTTParty.post("https://api.intercom.io/customers/search", 
-   headers: { "Content-Type": "application/json",
+    headers: { "Content-Type": "application/json",
               "Accept": "application/json",
               "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
             },
-   query: {
-     "query":  {
-       "field": "custom_attributes.on_call_currently",
-       "operator": "=",
-      "value": true
-     }
+    query: {
+      "query": {
+        "field": "custom_attributes.on_call_currently",
+        "operator": "=",
+        "value": true
+      }
     }
-    p currently_on_call
+  ) 
+  p currently_on_call
 end
 
 private def update_an_oncall_person_in_intercom()
