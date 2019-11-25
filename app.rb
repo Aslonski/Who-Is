@@ -32,7 +32,7 @@ def set_on_call_people_in_intercom(people)
   intercom_client.users.create(id: hash_of_names[@css_name[0]], custom_attributes:{"on_call_currently": true})
   intercom_client.users.create(id: hash_of_names[@bs_name[0]], custom_attributes:{"on_call_currently": true})
 sleep(1)
-  get_currently_on_call_people
+  p get_currently_on_call_people
 end
 
 
@@ -190,7 +190,9 @@ private def get_currently_on_call_people
       }
     }
   ) 
-  p currently_on_call
+  @currently_on_call_hash = {}
+  currently_on_call.parsed_response["customers"].each{ |user|  @currently_on_call_hash[user["name"].split()[0]] = user["id"] }
+  return @currently_on_call_hash
 end
 
 private def update_an_oncall_person_in_intercom()
