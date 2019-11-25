@@ -168,7 +168,7 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
    }
   )
   @names_hash = {}
-  cse.parsed_response["customers"].each{ |user|  @names_hash[user["name"]] = user["id"] }
+  cse.parsed_response["customers"].each{ |user|  @names_hash[user["first_name"]] = user["id"] }
   return @names_hash
 
 end
