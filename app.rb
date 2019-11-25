@@ -28,14 +28,11 @@ end
 
 def set_on_call_people_in_intercom(people)
   hash_of_names = find_people_in_intercom(extract_names_from_topic(people))
-  p hash_of_names[@cse_name[0]]
-  p hash_of_names[@css_name[0]]
-  p hash_of_names[@bs_name[0]]
   intercom_client.users.create(id: hash_of_names[@cse_name[0]], custom_attributes:{"on_call_currently": true})
   intercom_client.users.create(id: hash_of_names[@css_name[0]], custom_attributes:{"on_call_currently": true})
   intercom_client.users.create(id: hash_of_names[@bs_name[0]], custom_attributes:{"on_call_currently": true})
-  # p @cse_name[0]
-  # p hash_of_names
+sleep(1)
+  get_currently_on_call_people
 end
 
 
@@ -147,7 +144,7 @@ private def query_name_inserter(name)
 end
 
 def find_people_in_intercom(names)
-cse = HTTParty.post("https://api.intercom.io/customers/search", 
+teammates = HTTParty.post("https://api.intercom.io/customers/search", 
    headers: { "Content-Type": "application/json",
               "Accept": "application/json",
               "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
@@ -173,13 +170,26 @@ cse = HTTParty.post("https://api.intercom.io/customers/search",
    }
   )
   @names_hash = {}
-  cse.parsed_response["customers"].each{ |user|  @names_hash[user["name"].split()[0]] = user["id"] }
+  teammates.parsed_response["customers"].each{ |user|  @names_hash[user["name"].split()[0]] = user["id"] }
   return @names_hash
 
 end
 
 private def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
+  currently_on_call = HTTParty.post("https://api.intercom.io/customers/search", 
+   headers: { "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
+            },
+   query: {
+     "query":  {
+       "field": "custom_attributes.on_call_currently",
+       "operator": "=",
+      "value": true
+     }
+    }
+    p currently_on_call
 end
 
 private def update_an_oncall_person_in_intercom()
