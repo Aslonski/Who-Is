@@ -28,7 +28,8 @@ end
 
 def set_on_call_people_in_intercom(people)
   hash_of_names = find_people_in_intercom(extract_names_from_topic(people))
-  p @cse_name
+  p @cse_name[0]
+  p hash_of_names
   p hash_of_names[@cse_name[0]]
 end
 
