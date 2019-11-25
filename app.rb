@@ -28,9 +28,12 @@ end
 
 def set_on_call_people_in_intercom(people)
   hash_of_names = find_people_in_intercom(extract_names_from_topic(people))
-  p @cse_name[0]
-  p hash_of_names
-  p hash_of_names[@cse_name[0]]
+  intercom_client.users.create(id: @cse_name[0], "is_currently_on_call": true)
+  intercom_client.users.create(id: @css_name[0], "is_currently_on_call": true)
+  intercom_client.users.create(id: @bs_name[0], "is_currently_on_call": true)
+  # p @cse_name[0]
+  # p hash_of_names
+  # p hash_of_names[@cse_name[0]]
 end
 
 
