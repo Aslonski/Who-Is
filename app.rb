@@ -13,8 +13,8 @@ end
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   channel_topic = "#{request_data['event']['text']}"
-  set_on_call_people_in_intercom(channel_topic)
-
+  # set_on_call_people_in_intercom(channel_topic)
+  get_currently_on_call_people
   status 200
   # extract_names_from_topic(channel_topic)
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
@@ -174,7 +174,7 @@ teammates = HTTParty.post("https://api.intercom.io/customers/search",
 
 end
 
-private def get_currently_on_call_people
+def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
   currently_on_call = HTTParty.post("https://api.intercom.io/customers/search", 
     headers: { "Content-Type": "application/json",
