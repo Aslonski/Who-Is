@@ -13,8 +13,8 @@ end
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   channel_topic = "#{request_data['event']['text']}"
-  # set_on_call_people_in_intercom(channel_topic)
-  # sleep(2)
+  set_on_call_people_in_intercom(channel_topic)
+  sleep(2)
   get_currently_on_call_people
   # status 200
   # extract_names_from_topic(channel_topic)
@@ -144,7 +144,7 @@ private def query_name_inserter(name)
 end
 
 def find_people_in_intercom(names)
-teammates = HTTParty.post("https://api.intercom.io/customers/search", 
+teammates = HTTParty.post("https://api.intercom.io/contacts/search", 
    headers: { "Content-Type": "application/json",
               "Accept": "application/json",
               "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
@@ -170,14 +170,14 @@ teammates = HTTParty.post("https://api.intercom.io/customers/search",
    }
   )
   @names_hash = {}
-  teammates.parsed_response["customers"].each{ |user|  @names_hash[user["name"].split()[0]] = user["id"] }
+  teammates.parsed_response["data"].each{ |user|  @names_hash[user["name"].split()[0]] = user["id"] }
   return @names_hash
 
 end
 
 def get_currently_on_call_people
   # returns an array of people that have is_currently_on_call: true
-  currently_on_call = HTTParty.post("https://api.intercom.io/customers/search", 
+  currently_on_call = HTTParty.post("https://api.intercom.io/contacts/search", 
     headers: { "Content-Type": "application/json",
               "Accept": "application/json",
               "Authorization": "Bearer #{ENV['UNSTABLE-TOKEN']}"
@@ -191,7 +191,7 @@ def get_currently_on_call_people
     }
   ) 
   @currently_on_call_hash = {}
-  currently_on_call.parsed_response["customers"].each{ |user|  @currently_on_call_hash[user["name"].split()[0]] = user["id"] }
+  currently_on_call.parsed_response["data"].each{ |user|  @currently_on_call_hash[user["name"].split()[0]] = user["id"] }
   p @currently_on_call_hash
 end
 
