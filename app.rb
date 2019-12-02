@@ -13,9 +13,10 @@ end
 post '/slack' do 
   request_data = JSON.parse(request.body.read)
   channel_topic = "#{request_data['event']['text']}"
-  # set_on_call_people_in_intercom(channel_topic)
+  set_on_call_people_in_intercom(channel_topic)
+  sleep(2)
   get_currently_on_call_people
-  status 200
+  # status 200
   # extract_names_from_topic(channel_topic)
   # pull a segment of on-call users from Intercom -> "On Call Team" segment_id: 5d92336e9925897dd683c683
   # compare the segment against the data from the extracted names 
@@ -28,10 +29,10 @@ end
 
 def set_on_call_people_in_intercom(people)
   hash_of_names = find_people_in_intercom(extract_names_from_topic(people))
-  intercom_client.users.create(id: hash_of_names[@cse_name[0]], custom_attributes:{"on_call_currently": true})
-  intercom_client.users.create(id: hash_of_names[@css_name[0]], custom_attributes:{"on_call_currently": true})
-  intercom_client.users.create(id: hash_of_names[@bs_name[0]], custom_attributes:{"on_call_currently": true})
-   get_currently_on_call_people
+  # intercom_client.users.create(id: hash_of_names[@cse_name[0]], custom_attributes:{"on_call_currently": true})
+  # intercom_client.users.create(id: hash_of_names[@css_name[0]], custom_attributes:{"on_call_currently": true})
+  # intercom_client.users.create(id: hash_of_names[@bs_name[0]], custom_attributes:{"on_call_currently": true})
+   # get_currently_on_call_people
 end
 
 
